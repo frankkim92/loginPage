@@ -1,25 +1,29 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useRef, useState } from "react";
+import Login from "./Login";
+import styled from "styled-components";
+import Sign from "./Sign";
 
-function App() {
+const App = () => {
+  const [openLogin, setOpenLogin] = useState(false);
+  const [openSignUp, setOpenSignUp] = useState(false);
+
+  const openLoginFunc = () => {
+    setOpenLogin(!openLogin);
+  };
+
+  const openSignUpFunc = () => {
+    setOpenSignUp(!openSignUp);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <button onClick={openLoginFunc}>로그인(모달오픈)</button>
+      {openLogin && (
+        <Login openSignUpFunc={openSignUpFunc} openLoginFunc={openLoginFunc} />
+      )}
+      {openSignUp && <Sign />}
     </div>
   );
-}
+};
 
 export default App;
