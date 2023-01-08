@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-
+// import { getAuth, createUserWithEmailAndPassword } from "firebase";
 const Outside = styled.div`
   background: rgba(0, 0, 0, 0.25);
   width: 100vw;
@@ -21,6 +21,7 @@ const Inside = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 10px;
 `;
 
 const InputStyle = styled.input`
@@ -57,13 +58,13 @@ const TextName = styled.p`
   text-align: left;
 `;
 
-const Sign = () => {
+const Sign = ({ openLoginFunc, openSignUpFunc }) => {
   const [title, setTitle] = useState("");
   const [nickName, setNickName] = useState("");
   const [password, setPassword] = useState("");
   const [checkPassword, setCheckPassword] = useState("");
   const [titleError, setTitleError] = useState(false);
-
+  const [passwordError, setPasswordError] = useState(false);
   const onChangeTitle = (e) => {
     setTitle(e.target.value);
   };
@@ -80,6 +81,15 @@ const Sign = () => {
     setCheckPassword(e.target.value);
   };
 
+  // const signup = async () => {
+  //   const auth = getAuth();
+  //   const result = await createUserWithEmailAndPassword(auth, title, password);
+  //   console.log(result);
+  // };
+  // const signin = () => {
+  //   alert("$P{email}과 ${password}로 로그인을 했습니다.");
+  // };
+
   useEffect(() => {
     if (
       (title.includes("@") === false || title.includes(".com") === false) &&
@@ -91,24 +101,26 @@ const Sign = () => {
     }
   }, [title]);
 
+  useEffect(() => {
+    if (password !== checkPassword) {
+      setPasswordError(true);
+    } else {
+      setPasswordError(false);
+    }
+  }, [checkPassword]);
   return (
     <Outside>
       <Inside>
         <TextName>이메일 주소</TextName>
-
-        <InputStyle
-          style={titleError ? { borderColor: "red" } : {}}
-          placeholder="이메일주소"
-          value={title}
-          onChange={onChangeTitle}
-        />
-        {titleError && (
-          <span
-            style={{ position: "absolute", left: 150, top: 235, color: "red" }}
-          >
-            이메일에러
-          </span>
-        )}
+        <div style={{ display: "flex", flexDirection: "column" }}>
+          <InputStyle
+            style={titleError ? { borderColor: "red" } : {}}
+            placeholder="이메일주소"
+            value={title}
+            onChange={onChangeTitle}
+          />
+          {titleError ? <span>이메일에러</span> : ""}
+        </div>
 
         <TextName>닉네임</TextName>
         <InputStyle
@@ -130,9 +142,18 @@ const Sign = () => {
           value={checkPassword}
           onChange={onChangeCheckPassword}
         />
+        {passwordError ? <span>비밀번호 에러 입니다.</span> : ""}
 
         <ButtonGroup>
-          <ButtonStyle> 완료</ButtonStyle>
+          <ButtonStyle
+            onClick={() => {
+              openLoginFunc();
+              openSignUpFunc();
+            }}
+          >
+            {" "}
+            완료
+          </ButtonStyle>
         </ButtonGroup>
       </Inside>
     </Outside>

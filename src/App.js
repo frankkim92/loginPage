@@ -21,7 +21,9 @@ const App = () => {
       {openLogin && (
         <Login openSignUpFunc={openSignUpFunc} openLoginFunc={openLoginFunc} />
       )}
-      {openSignUp && <Sign />}
+      {openSignUp && (
+        <Sign openSignUpFunc={openSignUpFunc} openLoginFunc={openLoginFunc} />
+      )}
     </div>
   );
 };
